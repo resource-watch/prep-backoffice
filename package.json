@@ -1,0 +1,50 @@
+{
+  "name": "manager",
+  "version": "0.1.0",
+  "description": "Resource Watch is an open platform for everyone to explore accurate, up-to-date insights about our planet.",
+  "main": "server/application.js",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint .",
+    "dev": "node server/application.js",
+    "build": "next build",
+    "start": "NODE_ENV=production node server/application.js"
+  },
+  "keywords": [
+    "next",
+    "react"
+  ],
+  "author": "David Inga <david.inga@vizzuality.com>",
+  "license": "MIT",
+  "dependencies": {
+    "autoprefixer": "^7.1.5",
+    "babel-plugin-module-resolver": "^2.7.1",
+    "babel-plugin-wrap-in-js": "^1.1.1",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "next": "^4.1.4",
+    "next-redux-wrapper": "^1.3.4",
+    "node-sass": "^4.5.3",
+    "normalize.css": "^7.0.0",
+    "postcss-easy-import": "^3.0.0",
+    "postcss-loader": "^2.0.6",
+    "query-string": "^5.0.0",
+    "raw-loader": "^0.5.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-ga": "^2.3.5",
+    "react-redux": "^5.0.6",
+    "react-select": "^1.0.0-rc.10",
+    "redux": "^3.7.2",
+    "redux-actions": "^2.2.1",
+    "redux-devtools-extension": "^2.13.2",
+    "redux-thunk": "^2.2.0",
+    "reselect": "^3.0.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.0.1",
+    "eslint": "^4.8.0",
+    "eslint-config-vizzuality": "^1.0.7",
+    "eslint-plugin-babel": "^4.1.2"
+  }
+}
