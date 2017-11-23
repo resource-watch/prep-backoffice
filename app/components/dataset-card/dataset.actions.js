@@ -7,9 +7,11 @@ const fetchDatasetError = createAction('fetchDatasetError');
 const fetchDatasetReady = createAction('fetchDatasetReady');
 const setLayerData = createAction('setLayerData');
 
-const fetchDatasetData = createThunkAction('fetchDatasetData', (layerId, params) => (dispatch) => {
+const datasetAPIPath = `${process.env.API}/api/v1/dataset/`;
+
+const fetchDatasetData = createThunkAction('fetchDatasetData', (datasetId, params) => (dispatch) => {
   dispatch(fetchDatasetLoading(true));
-  return fetch(`${process.env.API}/api/v1/dataset/${layerId}?${qs.stringify(params)}`)
+  return fetch(`${datasetAPIPath}/${datasetId}?${qs.stringify(params)}`)
     .then((response) => {
       if (response.ok) return response.json();
       throw Error(response.statusText);

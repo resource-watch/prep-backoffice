@@ -3,17 +3,17 @@ import withRedux from 'next-redux-wrapper';
 import { initStore } from 'app/store';
 import Page from 'app/layouts/Page';
 
-class Home extends React.PureComponent {
+class DatasetsNewPage extends React.PureComponent {
   static getInitialProps() {
   }
 
   render() {
     return (
       <Page>
-        <h1>Datasets</h1>
+        <h1>New dataset</h1>
       </Page>
     );
   }
 }
 
-export default withRedux(initStore, null, null)(Home);
+export default withRedux(initStore, null, null)(DatasetsNewPage);

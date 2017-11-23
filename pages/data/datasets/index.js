@@ -3,7 +3,7 @@ import withRedux from 'next-redux-wrapper';
 import { initStore } from 'app/store';
 import Page from 'app/layouts/Page';
 
-class Home extends React.PureComponent {
+class DatasetsListPage extends React.PureComponent {
   static getInitialProps() {
   }
 
@@ -16,4 +16,4 @@ class Home extends React.PureComponent {
   }
 }
 
-export default withRedux(initStore, null, null)(Home);
+export default withRedux(initStore, null, null)(DatasetsListPage);

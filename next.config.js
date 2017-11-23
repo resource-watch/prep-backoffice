@@ -18,7 +18,8 @@ module.exports = {
 
     newConfig.resolve.alias = {
       app: './app',
-      utils: './app/utils'
+      utils: './app/utils',
+      components: './app/components'
     };
 
     return newConfig;
