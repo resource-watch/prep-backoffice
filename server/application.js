@@ -19,9 +19,6 @@ app.prepare()
     // Next routes
     server.use(handle);
 
-    // Next default routes
-    // server.get('*', (req, res) => handle(req, res));
-
     // Starting server
     server.listen(port, (err) => {
       if (err) throw err;

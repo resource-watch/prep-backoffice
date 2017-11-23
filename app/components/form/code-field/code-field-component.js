@@ -36,13 +36,14 @@ class Code extends React.PureComponent {
 }
 
 Code.propTypes = {
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func
 };
 
 Code.defaultProps = {
-  name: '{}'
+  name: 'json-editor',
+  value: '{}'
 };
 
 export default Code;
