@@ -2,7 +2,7 @@ import React from 'react';
 import withRedux from 'next-redux-wrapper';
 import { initStore } from 'app/store';
 import Page from 'app/layouts/Page';
-import { DatasetCreateForm } from 'app/components/dataset-form';
+import DatasetCreateForm from 'app/components/dataset-form';
 
 class DatasetsNewPage extends React.PureComponent {
   static getInitialProps() {
