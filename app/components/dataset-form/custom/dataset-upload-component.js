@@ -1,79 +1,68 @@
-import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { toastr } from 'react-redux-toastr';
+import FileComponent from 'components/form/file';
+import { post } from 'utils/request';
 
-import FileContainer from 'components/form/file/file';
+const FORMATS_WITH_COLUMNS = ['csv', 'tsv'];
 
-// utils
-// import { post } from 'utils/request';
+const mapStateToProps = state => state.datasetForm;
 
-const COLUMN_FORMAT = ['csv', 'tsv'];
-
-export default class DatasetUploadFile extends PureComponent {
+class DatasetUploadFile extends FileComponent {
   constructor(props) {
     super(props);
 
     // bindings
     this.onUploadDataset = this.onUploadDataset.bind(this);
+    this.onDrop = this.onDrop.bind(this);
   }
 
-  // onDrop(accepted, rejected) {
-  //   console.log(accepted, rejected);
-  // }
+  onUploadDataset(files) {
+    const { formData, user, id, setFormValues } = this.props;
 
-  onUploadDataset(file) {
-    // const formData = new FormData();
-    // const { provider } = this.props.properties || {};
-    // formData.append('dataset', file);
-    // formData.append('provider', provider);
+    const formSend = new FormData();
+    const file = files[0] || {};
+    const { provider } = formData;
 
-    // this.setState({ loading: true, errors: [] });
+    formSend.append('dataset', file);
+    formSend.append('provider', provider);
 
-    // post({
-    //   type: 'POST',
-    //   url: `${process.env.WRI_API_URL}/dataset/upload`,
-    //   headers: [{
-    //     key: 'Authorization', value: this.props.properties.authorization
-    //   }],
-    //   body: formData,
-    //   multipart: true,
-    //   onSuccess: ({ connectorUrl, fields }) => {
-    //     this.setState({
-    //       value: connectorUrl,
-    //       validations: ['required'],
-    //       loading: false
-    //     }, () => {
-    //       // Publish the new value to the form
-    //       if (this.props.onChange) {
-    //         this.props.onChange({
-    //           ...COLUMN_FORMAT.includes(provider) && {
-    //             // filters non-empty fields
-    //             fields: fields.filter(field => (field || '').length)
-    //           },
-    //           value: connectorUrl
-    //         });
-    //       }
-    //       // Trigger validation
-    //       this.triggerValidate();
-    //     });
-    //   },
-    //   onError: (err) => {
-    //     this.setState({
-    //       accepted: [],
-    //       loading: false
-    //     });
-    //     if (this.props.onValid) this.props.onValid(false, err);
-    //   }
-    // });
+    this.setState({
+      loading: true
+    }, () => {
+      post({
+        type: 'POST',
+        url: `${process.env.WRI_API_URL}/dataset/upload`,
+        headers: [{
+          key: 'Authorization',
+          value: (user || {}).token
+        }],
+        body: formSend,
+        multipart: true,
+        onSuccess: ({ connectorUrl, fields }) => {
+          setFormValues({
+            ...FORMATS_WITH_COLUMNS.includes(provider) && {
+              // filters non-empty fields
+              columnFields: fields.filter(field => (field || '').length)
+            },
+            [id]: connectorUrl
+          });
+
+          this.setState({ loading: false });
+        },
+        onError: (err) => {
+          toastr.error(err[0].detail);
+          this.setState({
+            accepted: [],
+            loading: false
+          });
+        }
+      });
+    });
   }
 
-  render() {
-    return (
-      <FileContainer
-        {...this.props}
-        uploadFile={this.onUploadDataset}
-        properties={{
-          name: 'dataset-upload'
-        }}
-      />
-    );
+  onDropCallback(accepted) {
+    this.onUploadDataset(accepted);
   }
 }
+
+export default connect(mapStateToProps, {})(DatasetUploadFile);

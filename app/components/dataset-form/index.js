@@ -1,82 +1,103 @@
-import { Component, createElement } from 'react';
+import React, { Component, createElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withProps } from 'recompose';
+import isEqual from 'lodash/isEqual';
 
 import DatasetUploadFile from 'components/dataset-form/custom/dataset-upload-component';
 
 import * as actions from './dataset-form-actions';
 import reducers, { initialState } from './dataset-form-reducers';
 import DatasetCreateForm from './dataset-create-form-component';
-import { schema } from './dataset-form-constants';
+import { schema, uiSchema } from './dataset-form-constants';
 
-const mapStateToProps = state => state;
+const mapStateToProps = state => state.datasetForm;
+
+const COLUMN_FORMAT = ['csv', 'tsv'];
 
 class DatasetCreateFormContainer extends Component {
-  static onSubmit(formData) {
-    // TO-DO
-  }
-
   constructor(props) {
     super(props);
 
+    this.widgets = {};
+
+    this.setCustomWidgets();
+
+    // bindings
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const isFormDataEqual = isEqual(this.props.formData, nextProps.formData);
+
+    return !isFormDataEqual;
+  }
+
+  onSubmit({ formData }) {
+    this.props.setFormValues(formData);
+  }
+
+  onChange({ formData }) {
+    this.props.setFormValues(formData);
+  }
+
+  setCustomWidgets() {
     const {
       onDragEnter,
       onDragLeave,
-      onDrop,
-      datasetForm
-    } = props;
+      setFormValues
+    } = this.props;
 
-    const inputProps = {
+    const customFileProps = {
       onDragEnter,
       onDragLeave,
-      onDrop
-    };
-
-    const UploadField = withProps({
-      ...inputProps,
-      data: datasetForm.datasetUpload,
-      id: 'datasetUpload'
-    })(DatasetUploadFile);
-
-    this.uiSchema = {
-      environment: {
-        'ui:help': 'Choose "preproduction" to see this dataset it only as admin, "production" option will show it in public site.'
-      },
-      type: {
-        'ui:widget': 'select'
-      },
-      featureServiceUrlDataEndpoint: {
-        'ui:widget': UploadField,
-        'ui:options': {
-          inputType: 'url'
-        }
+      setFormValues,
+      onChange: (id, value = '') => {
+        this.props.setFormValues({ [id]: value });
       }
     };
 
-    // bindings
-    this.onSubmit = DatasetCreateFormContainer.onSubmit.bind(this);
+    // custom widgets
+    const customFileInput = props =>
+      (<DatasetUploadFile
+        {...{
+          ...customFileProps,
+          value: props.value,
+          properties: {},
+          // formData,
+          id: 'connectorUrl'
+        }}
+      />);
+
+    this.widgets = {
+      customFileInput
+    };
   }
 
-
   render() {
+    const { formData } = this.props;
     return createElement(DatasetCreateForm, {
       schema,
-      uiSchema: this.uiSchema,
-      onSubmit: this.onSubmit
+      formData,
+      uiSchema,
+      widgets: this.widgets,
+      onSubmit: this.onSubmit,
+      onChange: this.onChange
     });
   }
 }
 
 DatasetCreateFormContainer.defaultProps = {
-  datasetForm: {}
+  formData: {}
 };
 
 DatasetCreateFormContainer.propTypes = {
+  formData: PropTypes.object,
+  setFormValues: PropTypes.func,
   onDragEnter: PropTypes.func,
-  onDrop: PropTypes.func,
   onDragLeave: PropTypes.func,
-  datasetForm: PropTypes.object
+  onUploadFile: PropTypes.func,
+  setFileLoading: PropTypes.func
 };
 
 export { initialState, reducers, actions };

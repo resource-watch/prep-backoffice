@@ -1,31 +1,34 @@
 import * as actions from './dataset-form-actions';
 
-const fileState = {
-  validations: [],
-  value: '',
-  accepted: [],
-  rejected: [],
-  dropzoneActive: false,
-  loading: false
-};
-
 export const initialState = {
-  datasetUpload: { ...fileState }
+  formData: {
+    title: '',
+    subtitle: '',
+    application: [],
+    type: 'tabular',
+    provider: '',
+    connectorType: '',
+    connectorUrlHint: '',
+    published: false,
+    geoInfo: false,
+    verified: false,
+    env: 'prepproduction',
+    tableName: '',
+    widgetRelevantProps: [],
+    layerRelevantProps: [],
+    connectorUrl: '',
+    dataPath: '',
+    columnFields: [],
+    legend: {
+      lat: undefined,
+      long: undefined,
+      date: [],
+      country: []
+    }
+  }
 };
 
 export default {
-  [actions.onDragEnter]: state => ({ ...state, dropzoneActive: true }),
-  [actions.onDragLeave]: state => ({ ...state, currentFilter: false }),
-  [actions.onDrop]: (state, { payload }) => {
-    const { accepted, rejected, id } = payload;
-    return ({
-      ...state,
-      [id]: {
-        ...state[id],
-        accepted,
-        rejected,
-        dropzoneActive: false
-      }
-    });
-  }
+  [actions.setFormValues]: (state, { payload }) =>
+    ({ ...state, formData: { ...state.formData, ...payload } })
 };

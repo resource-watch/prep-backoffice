@@ -3,7 +3,7 @@ export const schema = {
   type: 'object',
   required: ['environment', 'title', 'type', 'provider'],
   properties: {
-    environment: {
+    env: {
       type: 'string',
       title: 'Environment',
       default: 'prepproduction',
@@ -35,13 +35,11 @@ export const schema = {
     geo: {
       type: 'boolean',
       title: 'Yes',
-      description: 'Does this dataset contain geographical features such as points, polygons or lines?',
-      default: false
+      description: 'Does this dataset contain geographical features such as points, polygons or lines?'
     },
     provider: {
       type: 'string',
       title: 'Provider',
-      default: 'featureservice',
       enum: ['cartodb', 'gee', 'featureservice', 'nexgddp', 'json', 'csv', 'tsv', 'xml', 'wms'],
       enumNames: ['Carto', 'Google Earth Engine', 'Argics Feature Service', 'NexGDDP', 'JSON',
         'CSV', 'TSV', 'XML', 'WMS']
@@ -120,12 +118,12 @@ export const schema = {
               description: 'Is this dataset verified?',
               default: false
             },
-            csvDataEndpoint: {
+            connectorUrl: {
               type: 'string',
               title: 'Url data endpoint / File'
             }
           },
-          required: ['csvDataEndpoint']
+          required: ['connectorUrl']
         },
         {
           properties: {
@@ -138,18 +136,19 @@ export const schema = {
               description: 'Is this dataset verified?',
               default: false
             },
-            jsonDataEndpoint: {
+            connectorUrl: {
               type: 'string',
+              format: 'uri',
               title: 'Url data endpoint / File'
             },
-            jsonDataPath: {
+            dataPath: {
               type: 'string',
               title: 'Data path',
               description: 'Name of the element that you want to import',
               minLength: 2
             }
           },
-          required: ['jsonDataEndpoint']
+          required: ['connectorUrl']
         },
         {
           properties: {
@@ -162,12 +161,13 @@ export const schema = {
               description: 'Is this dataset verified?',
               default: false
             },
-            tsvDataEndpoint: {
+            connectorUrl: {
               type: 'string',
+              format: 'uri',
               title: 'Url data endpoint / File'
             }
           },
-          required: ['tsvDataEndpoint']
+          required: ['connectorUrl']
         },
         {
           properties: {
@@ -180,33 +180,49 @@ export const schema = {
               description: 'Is this dataset verified?',
               default: false
             },
-            xmlDataEndpoint: {
+            connectorUrl: {
               type: 'string',
               title: 'Url data endpoint / File'
             },
-            xmlDataPath: {
+            dataPath: {
               type: 'string',
               title: 'Data path',
               description: 'Name of the element that you want to import',
               minLength: 2
             }
           },
-          required: ['xmlDataEndpoint', 'xmlDataPath']
+          required: ['connectorUrl', 'dataPath']
         },
         {
           properties: {
             provider: {
               enum: ['wms']
             },
-            xmlDataEndpoint: {
+            connectorUrl: {
               type: 'string',
               title: 'Url data endpoint / File',
               description: 'This connector will only display the data as a wms map layer. The data will not be available through queries.'
             }
           },
-          required: ['xmlDataEndpoint']
+          required: ['connectorUrl']
         }
       ]
+    }
+  }
+};
+
+
+export const uiSchema = {
+  env: {
+    'ui:help': 'Choose "preproduction" to see this dataset it only as admin, "production" option will show it in public site.'
+  },
+  type: {
+    'ui:widget': 'select'
+  },
+  connectorUrl: {
+    'ui:widget': 'customFileInput',
+    'ui:options': {
+      inputType: 'url'
     }
   }
 };
