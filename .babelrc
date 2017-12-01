@@ -6,7 +6,8 @@
         "alias": {
           "styles": "./styles",
           "app": "./app",
-          "components": "./app/components"
+          "components": "./app/components",
+          "utils": "./app/utils"
         },
         "cwd": "babelrc"
     }],

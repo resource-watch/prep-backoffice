@@ -3,87 +3,69 @@ import Form from 'react-jsonschema-form';
 import CodeField from 'components/form/code-field/code-field-component';
 
 const schema = {
-  title: 'Create dataset',
+  title: 'Create layer',
   type: 'object',
-  required: ['title', 'environment', 'provider'],
+  required: ['dataset', 'title', 'provider'],
   properties: {
+    dataset: {
+      type: 'string',
+      title: 'Dataset',
+      enum: [],
+      enumNames: []
+    },
     title: {
       type: 'string',
       title: 'Title',
       minLength: 3
     },
-    subtitle: {
-      type: 'string',
-      title: 'Subtitle'
-    },
-    environment: {
-      type: 'string',
-      title: 'Environment',
-      default: 'prepproduction',
-      enum: ['prepproduction', 'production']
-    },
-    geo: {
-      type: 'boolean',
-      title: 'Does this dataset contain geographical features such as points, polygons or lines?',
-      default: false
-    },
     provider: {
       type: 'string',
       title: 'Provider',
       default: 'cartodb',
-      enum: ['cartodb', 'gee', 'featureservice', 'nexgddp', 'json', 'csv', 'tsv', 'xml', 'wms'],
-      enumNames: ['Carto', 'Google Earth Engine', 'Argics Feature Service', 'NexGDDP', 'JSON',
-        'CSV', 'TSV', 'XML', 'WMS']
+      enum: ['cartodb', 'featureservice', 'leaflet', 'wms', 'gee'],
+      enumNames: ['Carto', 'Argics Feature Service', 'Leaflet', 'WMS', 'GEE']
     },
-    config: {
+    description: {
+      type: 'string',
+      title: 'Description'
+    },
+    layerConfig: {
       type: 'string',
       default: '{}'
     },
-    published: {
+    legendConfig: {
+      type: 'string',
+      default: '{}'
+    },
+    interactionConfig: {
+      type: 'string',
+      default: '{}'
+    },
+    default: {
       type: 'boolean',
-      title: 'Published',
+      title: 'Default',
+      description: 'Do you want to set this layer as the default one. (Only one default layer per dataset is allowed at a time)',
       default: false
-    }
-  },
-  dependencies: {
-    provider: {
-      oneOf: [
-        {
-          properties: {
-            provider: {
-              enum: ['nexgddp']
-            },
-            tablename: {
-              title: 'Table name',
-              type: 'string'
-            }
-          }
-        },
-        {
-          properties: {
-            provider: {
-              enum: ['cartodb']
-            },
-            tablename: {
-              title: 'Table name',
-              type: 'string'
-            },
-            username: {
-              title: 'User name',
-              type: 'string'
-            }
-          }
-        }
-      ]
     }
   }
 };
 
 const uiSchema = {
-  environment: {
-    'ui:help': 'Choose "preproduction" to see this dataset it only as admin, "production" option will show it in public site.'
+  dataset: {
+    'ui:widget': 'select'
   },
-  config: {
+  description: {
+    'ui:widget': 'textarea'
+  },
+  layerConfig: {
+    'ui:widget': CodeField,
+    'ui:help': 'This must be valid JSON.'
+  },
+  legendConfig: {
+    'ui:widget': CodeField,
+    'ui:help': 'This must be valid JSON.'
+  },
+  interactionConfig: {
     'ui:widget': CodeField,
     'ui:help': 'This must be valid JSON.'
   }
@@ -92,6 +74,7 @@ const uiSchema = {
 export default class LayerCreateForm extends React.PureComponent {
   constructor(props) {
     super(props);
+
     this.onSubmit = this.onSubmit.bind(this);
   }
 
