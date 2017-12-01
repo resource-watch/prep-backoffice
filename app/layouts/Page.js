@@ -6,7 +6,14 @@ import Head from './Head';
 export default ({ children }) => (
   <div>
     <Head />
-    { children }
+
+    <div className="container">
+      <div className="row">
+        <div className="col col-md-8 col-md-offset-2">
+          { children }
+        </div>
+      </div>
+    </div>
 
     <Toastr
       preventDuplicates

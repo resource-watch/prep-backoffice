@@ -1,18 +1,18 @@
 export const schema = {
   title: 'Create dataset',
   type: 'object',
-  required: ['environment', 'title', 'type', 'provider'],
+  required: ['env', 'title'],
   properties: {
     env: {
       type: 'string',
       title: 'Environment',
       default: 'prepproduction',
-      enum: ['prepproduction', 'production']
+      enum: ['prepproduction', 'production'],
+      enumNames: ['Pre-production', 'Production']
     },
     published: {
       type: 'boolean',
       title: 'Published',
-      description: 'Do you want to set this dataset as published?',
       default: true
     },
     title: {
@@ -24,10 +24,14 @@ export const schema = {
       type: 'string',
       title: 'Subtitle'
     },
+    protected: {
+      type: 'boolean',
+      title: 'Protected',
+      default: false
+    },
     type: {
       type: 'string',
       title: 'Type',
-      description: 'Replace with DOM!',
       default: 'tabular',
       enum: ['tabular', 'raster'],
       enumNames: ['Tabular', 'Raster']
@@ -35,7 +39,7 @@ export const schema = {
     geo: {
       type: 'boolean',
       title: 'Yes',
-      description: 'Does this dataset contain geographical features such as points, polygons or lines?'
+      default: false
     },
     provider: {
       type: 'string',
@@ -216,8 +220,20 @@ export const uiSchema = {
   env: {
     'ui:help': 'Choose "preproduction" to see this dataset it only as admin, "production" option will show it in public site.'
   },
+  published: {
+    'ui:widget': 'radio',
+    'ui:description': 'Do you want to set this dataset as published?'
+  },
+  protected: {
+    'ui:widget': 'radio',
+    'ui:description': 'Do you want to set this dataset as protected?'
+  },
   type: {
     'ui:widget': 'select'
+  },
+  geo: {
+    'ui:widget': 'radio',
+    'ui:description': 'Does this dataset contain geographical features such as points, polygons or lines?'
   },
   connectorUrl: {
     'ui:widget': 'customFileInput',
