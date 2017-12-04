@@ -4,19 +4,29 @@ import { connect } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 
 import DatasetUploadFile from 'components/dataset-form/custom/dataset-upload-component';
+import DatasetService from 'services/datasets';
 
 import * as actions from './dataset-form-actions';
 import reducers, { initialState } from './dataset-form-reducers';
 import DatasetCreateForm from './dataset-create-form-component';
-import { schema, uiSchema } from './dataset-form-constants';
+import { schema, uiSchema, PROVIDER_TYPES_DICTIONARY } from './dataset-form-constants';
 
 const mapStateToProps = state => state.datasetForm;
 
-const COLUMN_FORMAT = ['csv', 'tsv'];
-
 class DatasetCreateFormContainer extends Component {
+  static parseFormData(formData = {}) {
+    return {
+      ...formData,
+      ...{ connectorType: (PROVIDER_TYPES_DICTIONARY[formData.provider] || {}).connectorType }
+    };
+  }
+
   constructor(props) {
     super(props);
+
+    this.datasetService = new DatasetService({
+      authorization: ''
+    });
 
     this.widgets = {};
 
@@ -34,7 +44,8 @@ class DatasetCreateFormContainer extends Component {
   }
 
   onSubmit({ formData }) {
-    this.props.setFormValues(formData);
+    const parsedFormData = DatasetCreateFormContainer.parseFormData(formData);
+    this.datasetService.createDataset(parsedFormData);
   }
 
   onChange({ formData }) {

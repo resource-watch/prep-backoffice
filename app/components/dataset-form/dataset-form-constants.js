@@ -1,21 +1,20 @@
 export const schema = {
   title: 'Create dataset',
   type: 'object',
-  required: ['env', 'title'],
+  required: ['env', 'name', 'type', 'provider'],
   properties: {
     env: {
       type: 'string',
       title: 'Environment',
-      default: 'prepproduction',
-      enum: ['prepproduction', 'production'],
-      enumNames: ['Pre-production', 'Production']
+      default: 'preproduction',
+      enum: ['Pre-production', 'production']
     },
     published: {
       type: 'boolean',
       title: 'Published',
       default: true
     },
-    title: {
+    name: {
       type: 'string',
       title: 'Title',
       minLength: 3
@@ -240,5 +239,39 @@ export const uiSchema = {
     'ui:options': {
       inputType: 'url'
     }
+  }
+};
+
+export const PROVIDER_TYPES_DICTIONARY = {
+  cartodb: {
+    connectorType: 'rest'
+  },
+  gee: {
+    connectorType: 'rest'
+  },
+  nexgddp: {
+    connectorType: 'rest'
+  },
+  featureservice: {
+    connectorType: 'rest'
+  },
+  csv: {
+    basic: true,
+    connectorType: 'document'
+  },
+  json: {
+    basic: true,
+    connectorType: 'document'
+  },
+  tsv: {
+    basic: true,
+    connectorType: 'document'
+  },
+  xml: {
+    basic: true,
+    connectorType: 'document'
+  },
+  wms: {
+    connectorType: 'wms'
   }
 };

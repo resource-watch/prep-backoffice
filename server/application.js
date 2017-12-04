@@ -1,3 +1,5 @@
+require('es6-promise').polyfill();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const next = require('next');

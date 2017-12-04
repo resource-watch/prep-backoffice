@@ -1,18 +1,20 @@
 import * as actions from './dataset-form-actions';
 
+const application = (process.env.APPLICATIONS || []).split(',');
+
 export const initialState = {
   formData: {
-    title: '',
+    name: '',
     subtitle: '',
-    application: [],
+    application,
     type: 'tabular',
     provider: '',
     connectorType: '',
-    connectorUrlHint: '',
+    // connectorUrlHint: '',
     published: false,
     geoInfo: false,
     verified: false,
-    env: 'prepproduction',
+    env: 'preproduction',
     tableName: '',
     widgetRelevantProps: [],
     layerRelevantProps: [],
