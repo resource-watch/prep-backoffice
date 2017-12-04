@@ -7,6 +7,7 @@
           "styles": "./styles",
           "app": "./app",
           "components": "./app/components",
+          "services": "./app/services",
           "utils": "./app/utils"
         },
         "cwd": "babelrc"

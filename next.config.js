@@ -23,7 +23,8 @@ module.exports = {
     newConfig.resolve.alias = {
       app: './app',
       utils: './app/utils',
-      components: './app/components'
+      components: './app/components',
+      services: './app/services'
     };
 
     newConfig.plugins.push(

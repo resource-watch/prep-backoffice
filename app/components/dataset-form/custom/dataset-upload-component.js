@@ -30,12 +30,10 @@ class DatasetUploadFile extends FileComponent {
       loading: true
     }, () => {
       post({
-        type: 'POST',
         url: `${process.env.WRI_API_URL}/dataset/upload`,
-        headers: [{
-          key: 'Authorization',
-          value: (user || {}).token
-        }],
+        headers: {
+          Authorization: (user || {}).token
+        },
         body: formSend,
         multipart: true,
         onSuccess: ({ connectorUrl, fields }) => {
@@ -50,7 +48,7 @@ class DatasetUploadFile extends FileComponent {
           this.setState({ loading: false });
         },
         onError: (err) => {
-          toastr.error(err[0].detail);
+          toastr.error(err);
           this.setState({
             accepted: [],
             loading: false
